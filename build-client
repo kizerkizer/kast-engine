@@ -1,0 +1,8 @@
+#! /bin/bash
+
+rm -r dist > /dev/null
+mkdir dist
+
+rollup ./engine.mjs \
+  --format iife \
+  --file ./dist/engine.js
