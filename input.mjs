@@ -1,10 +1,6 @@
-const keys = {
+const keys = {};
 
-};
-
-const mouse = {
-
-};
+const mouse = {};
 
 document.body.onkeydown = (e) => {
   keys[e.which] = true;
