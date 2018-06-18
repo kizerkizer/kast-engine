@@ -1,4 +1,4 @@
-import { draw } from './render.mjs';
 import * as globals from './globals.mjs';
+import { start } from './loop.mjs';
 
-requestAnimationFrame(draw);
+start();
