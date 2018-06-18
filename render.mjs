@@ -3,6 +3,8 @@ import { keys, mouse} from './input.mjs';
 import { cast } from './cast.mjs';
 import { theta } from './movement.mjs';
 
+import * as txStone from './stonetexturebase64.mjs';
+
 let imageData = globals.raycast.createImageData(globals.width, globals.height),
   diamondID = globals.getIDFromImage(diamond);
 
@@ -23,6 +25,20 @@ function fillID (imageData, x, y, width, height, color) {
       iddata[offset0 + offset1 + 2] = color[2];
       iddata[offset0 + offset1 + 3] = color[3];
     }
+  }
+}
+
+function drawShrunkColumn (targetImageData, sourceImageData, targetX, sourceX, height) {
+  let tData = targetImageData.data,
+    sData = sourceImageData.data;
+  let ratio = targetImageData.height / sourceImageData.height;
+  for (let yi = 0; yi < targetImageData.height; yi++) {
+    let sourcePixel = ratio * yi * sourceImageData.width * 4 + sourceX * 4,
+      targetPixel = yi * targetImageData.width * 4 + targetX * 4;
+    tData[targetPixel + 0] = sData[sourcePixel + 0]
+    tData[targetPixel + 1] = sData[sourcePixel + 1]
+    tData[targetPixel + 2] = sData[sourcePixel + 2]
+    tData[targetPixel + 3] = sData[sourcePixel + 3]
   }
 }
 
