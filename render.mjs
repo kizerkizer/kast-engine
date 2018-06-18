@@ -3,10 +3,10 @@ import { keys, mouse} from './input.mjs';
 import { cast } from './cast.mjs';
 import { theta } from './movement.mjs';
 
-import * as txStone from './stonetexturebase64.mjs';
-
 let imageData = globals.raycast.createImageData(globals.width, globals.height),
   diamondID = globals.getIDFromImage(diamond);
+
+console.log(diamondID);
 
 function fillID (imageData, x, y, width, height, color) {
   x = x << 0;
@@ -28,32 +28,82 @@ function fillID (imageData, x, y, width, height, color) {
   }
 }
 
-function drawShrunkColumn (targetImageData, sourceImageData, targetX, sourceX, height) {
+/*function drawShrunkColumn (ratio, targetImageData, sourceImageData, sourceHeight, targetHeight, sourceWidth, targetWidth, targetX, sourceX, startY, height) {
+  sourceHeight = sourceHeight << 0;
+  targetHeight = targetHeight << 0;
+  sourceWidth = sourceWidth << 0;
+  targetWidth = targetWidth << 0;
+  targetX = targetX << 0;
+  sourceX = sourceX << 0;
+  startY = startY << 0;
+  height = height << 0;
+
   let tData = targetImageData.data,
     sData = sourceImageData.data;
-  let ratio = targetImageData.height / sourceImageData.height;
-  for (let yi = 0; yi < targetImageData.height; yi++) {
-    let sourcePixel = ratio * yi * sourceImageData.width * 4 + sourceX * 4,
-      targetPixel = yi * targetImageData.width * 4 + targetX * 4;
-    tData[targetPixel + 0] = sData[sourcePixel + 0]
-    tData[targetPixel + 1] = sData[sourcePixel + 1]
-    tData[targetPixel + 2] = sData[sourcePixel + 2]
-    tData[targetPixel + 3] = sData[sourcePixel + 3]
+  //let ratio = sourceHeight / height;
+  for (let yi = 0; yi < height; yi++) {
+    let sourcePixel = (yi * sourceWidth * 4 + sourceX * 4) << 0,
+      targetPixel = (ratio * (yi + startY) * targetWidth * 4 + targetX * 4) << 0;
+    tData[targetPixel + 0] = sData[sourcePixel + 0];
+    tData[targetPixel + 1] = sData[sourcePixel + 1];
+    tData[targetPixel + 2] = sData[sourcePixel + 2];
+    tData[targetPixel + 3] = sData[sourcePixel + 3];
+  }
+}*/
+
+/*function scale (sourceImageData, targetImageData, sourceStartX, targetStartX, targetStartY, height) {
+  let source = sourceImageData.data;
+  let target = targetImageData.data;
+  let ratio = sourceImageData.height / height;
+  for (let j = 0; j < height; j++) {
+    let point = ratio * j;
+    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 0] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 0];
+    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 1] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 1];
+    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 2] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 2];
+    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 3] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 3];
+  }
+}*/
+
+function scale (sourceImageData, targetImageData, sourceStartX, targetStartX, targetStartY, height) {
+  let source = sourceImageData.data;
+  let target = targetImageData.data;
+  let ratio = sourceImageData.height / height;
+
+  sourceStartX = sourceStartX << 0;
+  targetStartX = targetStartX << 0;
+  targetStartY = targetStartY << 0;
+  height = height << 0;
+
+  for (let j = 0; j < height; j++) {
+    let point = ratio * j;
+    target[(j + targetStartY) * targetImageData.width * 4 + targetStartX * 4 + 0] = source[64 * (point << 0) * 4 + sourceStartX * 4 + 0]//[64 * 32 * 4 + 32]//source[(point * sourceImageData.width * 4 + sourceStartX * 4 + 0) << 0];
+    target[(j + targetStartY) * targetImageData.width * 4 + targetStartX * 4 + 1] = source[64 * (point << 0) * 4 + sourceStartX * 4 + 1]//[64 * 32 * 4 + 33]//source[(point * sourceImageData.width * 4 + sourceStartX * 4 + 1) << 0];
+    target[(j + targetStartY) * targetImageData.width * 4 + targetStartX * 4 + 2] = source[64 * (point << 0) * 4 + sourceStartX * 4 + 2]//[64 * 32 * 4 + 34]//source[(point * sourceImageData.width * 4 + sourceStartX * 4 + 2) << 0];
+    target[(j + targetStartY) * targetImageData.width * 4 + targetStartX * 4 + 3] = source[64 * (point << 0) * 4 + sourceStartX * 4 + 3]//[64 * 32 * 4 + 35]//source[(point * sourceImageData.width * 4 + sourceStartX * 4 + 3) << 0];
   }
 }
 
 export function render (dt) {
   for (let i = -globals.p / 2; i <= globals.p / 2; i += 1) {
-    let { vertex, hit } = cast(i * globals.dtheta + theta);
+    let { vertex, hit, which } = cast(i * globals.dtheta + theta);
     let dist = globals.distance(vertex, globals.observer) * Math.cos(Math.PI / 6);
     let s = 2; // TODO
     let color = hit ? [0, 255, 0, 1] : [128, 128, 128, 1];
     let _height = (globals.side * globals.d) / dist;//((d) / (dist / 90));// + (playerHeight / globals.side);
     let starty = (globals.height / 2) - (_height / 2);
     let startx = i + globals.width / 2;
-
     fillID(imageData, startx, 0, 1, starty,  [0, 0, 128, 255]); // sky
-    fillID(imageData, startx, starty, 1, _height, [0, (255/(dist * 0.02)) << 0, 0, 255]); // block
+    if (hit) {
+      if (which === `vertical`) {
+        //scale(diamondID, imageData, (((vertex[1] << 0) - ((vertex[1] / globals.side) << 0))), startx, starty, _height);
+        scale(diamondID, imageData, (vertex[1] % globals.side) << 0, startx, starty, _height);
+      } else {
+        //scale(diamondID, imageData, (((vertex[0] << 0) - ((vertex[0] / globals.side) << 0))), startx, starty, _height);
+        scale(diamondID, imageData, (vertex[0] % globals.side) << 0, startx, starty, _height);
+      }
+    } else {
+      fillID(imageData, startx, starty, 1, _height,  [0, 0, 0, 255]); // "fog"
+    }
     fillID(imageData, startx, starty + _height, 1, globals.height - (starty + _height), [128, 128, 128, 255]); // floor
   }
   globals.raycast.putImageData(imageData, 0, 0);

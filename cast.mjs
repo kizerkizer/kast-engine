@@ -7,6 +7,7 @@ function cast (theta) {
   let current = globals.observer;
   let hit = false;
   let offset;
+  let which;
   for (let i = 0; i < 10; i++) {
     /*if (globals.grid[getCellUnderVertex(current)[0]] && globals.grid[getCellUnderVertex(current)[0]][getCellUnderVertex(current)[1]] === 1) {
       hit = true;
@@ -28,6 +29,7 @@ function cast (theta) {
       current = v1;
       if (globals.grid[globals.getCellUnderVertex(v1)[0]] && globals.grid[globals.getCellUnderVertex(v1)[0]][globals.getCellUnderVertex(v1)[1]] === 1) {
         hit = true;
+        which = `vertical`;
         offset = current[1] % globals.side;
         break;
       }
@@ -35,6 +37,7 @@ function cast (theta) {
       current = h1;
       if (globals.grid[globals.getCellUnderVertex(h1)[0]] && globals.grid[globals.getCellUnderVertex(h1)[0]][globals.getCellUnderVertex(h1)[1]] === 1) {
         hit = true;
+        which = `horizontal`;
         offset = current[0] % globals.side;
         break;
       }
@@ -43,7 +46,8 @@ function cast (theta) {
   return {
     vertex: current,
     hit,
-    offset
+    offset,
+    which
   };
 }
 
