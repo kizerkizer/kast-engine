@@ -29,7 +29,6 @@ function fillID (imageData, x, y, width, height, color) {
 export function render (dt) {
   for (let i = -globals.p / 2; i <= globals.p / 2; i += 1) {
     let { vertex, hit } = cast(i * globals.dtheta + theta);
-    console.log(vertex);
     let dist = globals.distance(vertex, globals.observer) * Math.cos(Math.PI / 6);
     let s = 2; // TODO
     let color = hit ? [0, 255, 0, 1] : [128, 128, 128, 1];
