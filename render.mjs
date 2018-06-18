@@ -27,7 +27,6 @@ function fillID (imageData, x, y, width, height, color) {
 }
 
 export function render (dt) {
-  //fillID(imageData, 0, 0, globals.width, globals.height, [0, 0, 0, 255]);
   for (let i = -globals.p / 2; i <= globals.p / 2; i += 1) {
     let { vertex, hit } = cast(i * globals.dtheta + theta);
     console.log(vertex);
@@ -37,8 +36,10 @@ export function render (dt) {
     let _height = (globals.side * globals.d) / dist;//((d) / (dist / 90));// + (playerHeight / globals.side);
     let starty = (globals.height / 2) - (_height / 2);
     let startx = i + globals.width / 2;
-    //console.log(imageData, startx, starty, 1, _height, [0, (255/(dist * 0.02)) << 0, 0, 255]);
-    fillID(imageData, startx, starty, 1, _height, [0, (255/(dist * 0.02)) << 0, 0, 255]);
+
+    fillID(imageData, startx, 0, 1, starty,  [0, 0, 128, 255]); // sky
+    fillID(imageData, startx, starty, 1, _height, [0, (255/(dist * 0.02)) << 0, 0, 255]); // block
+    fillID(imageData, startx, starty + _height, 1, globals.height - (starty + _height), [128, 128, 128, 255]); // floor
   }
   globals.raycast.putImageData(imageData, 0, 0);
 }
