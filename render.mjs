@@ -6,8 +6,6 @@ import { theta } from './movement.mjs';
 let imageData = globals.raycast.createImageData(globals.width, globals.height),
   diamondID = globals.getIDFromImage(diamond);
 
-console.log(diamondID);
-
 function fillID (imageData, x, y, width, height, color) {
   x = x << 0;
   y = y << 0;
@@ -27,42 +25,6 @@ function fillID (imageData, x, y, width, height, color) {
     }
   }
 }
-
-/*function drawShrunkColumn (ratio, targetImageData, sourceImageData, sourceHeight, targetHeight, sourceWidth, targetWidth, targetX, sourceX, startY, height) {
-  sourceHeight = sourceHeight << 0;
-  targetHeight = targetHeight << 0;
-  sourceWidth = sourceWidth << 0;
-  targetWidth = targetWidth << 0;
-  targetX = targetX << 0;
-  sourceX = sourceX << 0;
-  startY = startY << 0;
-  height = height << 0;
-
-  let tData = targetImageData.data,
-    sData = sourceImageData.data;
-  //let ratio = sourceHeight / height;
-  for (let yi = 0; yi < height; yi++) {
-    let sourcePixel = (yi * sourceWidth * 4 + sourceX * 4) << 0,
-      targetPixel = (ratio * (yi + startY) * targetWidth * 4 + targetX * 4) << 0;
-    tData[targetPixel + 0] = sData[sourcePixel + 0];
-    tData[targetPixel + 1] = sData[sourcePixel + 1];
-    tData[targetPixel + 2] = sData[sourcePixel + 2];
-    tData[targetPixel + 3] = sData[sourcePixel + 3];
-  }
-}*/
-
-/*function scale (sourceImageData, targetImageData, sourceStartX, targetStartX, targetStartY, height) {
-  let source = sourceImageData.data;
-  let target = targetImageData.data;
-  let ratio = sourceImageData.height / height;
-  for (let j = 0; j < height; j++) {
-    let point = ratio * j;
-    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 0] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 0];
-    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 1] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 1];
-    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 2] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 2];
-    target[(((j + targetStartY) * targetImageData.width * 4 + targetStartX * 4) << 0) + 3] = source[((point * sourceImageData.width * 4 + sourceStartX * 4) << 0) + 3];
-  }
-}*/
 
 function scale (sourceImageData, targetImageData, sourceStartX, targetStartX, targetStartY, height) {
   let source = sourceImageData.data;
