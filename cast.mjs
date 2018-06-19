@@ -9,10 +9,6 @@ function cast (theta) {
   let offset;
   let which;
   for (let i = 0; i < 10; i++) {
-    /*if (globals.grid[getCellUnderVertex(current)[0]] && globals.grid[getCellUnderVertex(current)[0]][getCellUnderVertex(current)[1]] === 1) {
-      hit = true;
-      break;
-    }*/
     if (((theta >= 0 && theta <= Math.PI / 2) || (theta <= 0 && theta >= -Math.PI / 2))) {
       v1 = rightDrawOneRay2(current, theta);
     } else {
