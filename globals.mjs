@@ -39,7 +39,7 @@ const side = 64,
 /// viewport
 
 let p = width,
-  d = 200,
+  d = (width / 2) / Math.tan(Math.PI / 6), // we want 60deg FOV
   playerHeight = 32;
 
  let dtheta = (Math.PI / 3) / p;//(2 * Math.atan2(p, d / 2)) / p;

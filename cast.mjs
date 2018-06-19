@@ -1,5 +1,9 @@
 import * as globals from './globals.mjs';
 
+function getCastTheta (d, distanceFromCenter) {
+  return Math.atan2(distanceFromCenter, d);
+}
+
 function cast (theta) {
   theta = globals.normalizeAngle(theta);
   let v1 = globals.observer;
@@ -84,5 +88,7 @@ function downDrawOneRay2 (initialVertex, theta) {
 }
 
 export {
-  cast
+  cast,
+  getCastTheta
 }
+
