@@ -1,3 +1,4 @@
 * Floors and skies
+* off by one causes pixel line at bottom of screen (bug)
 * Fix corner gap bug and bulging ridge out of wall bug
 * Fix lag when close-up viewing block
