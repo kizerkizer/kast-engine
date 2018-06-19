@@ -6,7 +6,8 @@ import { fill, scale } from './bm-util.mjs';
 
 // https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
 // https://www.madebymike.com.au/writing/canvas-image-manipulation/
-class BitMap {
+export class BitMap {
+  // TODO endianess
   constructor (imageData) {
     this._imageData = imageData;
     this._arrayBuffer = new ArrayBuffer(this._imageData.data.length);
