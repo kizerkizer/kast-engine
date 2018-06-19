@@ -46,7 +46,7 @@ function getNextIntersection (initialVertex, theta) {
     return {
       intersection: intersectionVertical,
       which: `vertical`,
-      offset: intersectionHorizontal[1] % globals.side
+      offset: intersectionVertical[1] % globals.side
     };
   }
 }
