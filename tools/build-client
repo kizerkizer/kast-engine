@@ -3,6 +3,8 @@
 rm -r dist > /dev/null
 mkdir dist
 
-rollup ./engine.mjs \
+cp index.html ./dist/
+
+rollup ./src/engine.mjs \
   --format iife \
   --file ./dist/engine.js
