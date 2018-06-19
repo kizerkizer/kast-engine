@@ -1,6 +1,8 @@
 // TODO properly organize contents of this file
 
-const raycast = document.querySelector('#raycast').getContext('2d');
+const raycast = document.querySelector('#raycast').getContext('2d', {
+  alpha: false
+});
 raycast.imageSmoothingEnabled = false;
 
 function min (a, b) {

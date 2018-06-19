@@ -2,7 +2,7 @@ import * as globals from './globals.mjs';
 import { keys, mouse} from './input.mjs';
 import { getCastTheta, cast } from './cast.mjs';
 import { theta } from './movement.mjs';
-import { fill, scale } from './bm-util.mjs';
+import { fill, scale } from './util/bitmaps.mjs';
 
 // https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
 // https://www.madebymike.com.au/writing/canvas-image-manipulation/
