@@ -1,2 +1,3 @@
 * Floors and skies
+* Fix corner gap bug and bulging ridge out of wall bug
 * Fix lag when close-up viewing block
