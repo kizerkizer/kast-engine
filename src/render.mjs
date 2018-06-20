@@ -36,6 +36,8 @@ function makeColor (array) {
   return (array[3] << 24) | (array[2] << 16) | (array[1] << 8) | (array[0] << 0);
 }
 
+let bmTemp = new BitMap(globals.raycast.createImageData(1, globals.side));
+
 let imageData = globals.raycast.createImageData(globals.width, globals.height),
   diamondID = globals.getIDFromImage(diamond);
 
@@ -45,7 +47,7 @@ let bmMain = new BitMap(imageData),
 export function render (dt) {
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
     let angle = getCastTheta(globals.d, i),
-      { intersection, hit, offset } = cast(angle + theta),
+      { which, intersection, hit, offset } = cast(angle + theta),
       correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
       color = hit ? [0, 255, 0, 1] : [128, 128, 128, 1],
       _height = (globals.side * globals.d) / correctedDistance,
@@ -55,7 +57,12 @@ export function render (dt) {
     fill(bmMain, startx, 0, 1, starty,  makeColor([0, 0, 128, 255])); // sky
 
     if (hit) {
-        scale(bmBricks, bmMain, offset, startx, starty, _height);
+      // draw tiled, scaled column
+      let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
+      for (let k = 0; k < globals.side; k++) {
+        bmTemp.buffer32[k] = bmBricks.buffer32[Math.floor(((k % bmBricks.height) * bmBricks.width) + (xOffset % bmBricks.width))];
+      }
+      scale(bmTemp, bmMain, 0, startx, starty, _height);
     } else {
       fill(bmMain, startx, starty, 1, _height,  makeColor([0, 0, 0, 255])); // "fog"
     }
