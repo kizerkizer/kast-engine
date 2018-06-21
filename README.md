@@ -10,3 +10,8 @@ A little raycaster engine.
 - [ ] Sprites
 - [x] Depth buffer
 - [ ] API
+- [ ] Multiple levels
+- [ ] Ramps
+- [ ] AI
+- [ ] Projectiles
+- [ ] Look up/down
