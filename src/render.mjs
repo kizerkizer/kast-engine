@@ -67,21 +67,22 @@ export function render (dt) {
       fill(bmMain, startx, starty, 1, _height,  makeColor([0, 0, 0, 255])); // "fog"
     }
 
+    // draw floor
     for (let k = 0, j = starty + _height; j < globals.height; j++, k++) {
       let distX = (globals.playerHeight * globals.d) / (j - (globals.height / 2)); // TODO should actually be function of playerHeight
-      //let hypotenuse = distX / Math.cos(angle);
-      //let distY = Math.sqrt(Math.pow(hypotenuse, 2) - Math.pow(distX, 2));
       let distY = distX * Math.tan(angle);
+
       let vector = [distX, distY];
+
       vector = [vector[0] * Math.cos(theta) + vector[1] * -Math.sin(theta), vector[0] * Math.sin(theta) + vector[1] * Math.cos(theta)];
       vector = [globals.observer[0] + vector[0], globals.observer[1] + vector[1]];
       vector[0] = vector[0] << 0;
       vector[1] = vector[1] << 0;
+
       let y = Math.floor(j);
       let x = Math.floor(startx);
       bmMain.buffer32[y * bmMain.width + x] = bmBricks.buffer32[Math.floor(((vector[1] % bmBricks.height) * bmBricks.width) + (vector[0] % bmBricks.width))];
     }
-    // fill(bmMain, startx, starty + _height, 1, globals.height - (starty + _height), makeColor([128, 128, 128, 255])); // floor
   }
 
   bmMain.write();
