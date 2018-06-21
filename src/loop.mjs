@@ -4,6 +4,7 @@ import { render } from './render.mjs';
 let last;
 
 function loop (timestamp) {
+  window.requestAnimationFrame(loop);
   if (!last) {
     last = timestamp;
   }
@@ -11,7 +12,6 @@ function loop (timestamp) {
   update(dt);
   render(dt);
   last = timestamp;
-  window.requestAnimationFrame(loop);
 }
 
 function start () {
