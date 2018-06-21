@@ -2,7 +2,7 @@ import * as globals from './globals.mjs';
 import { keys, mouse} from './input.mjs';
 import { getCastTheta, cast } from './cast.mjs';
 import { theta } from './movement.mjs';
-import { fill, scale } from './util/bitmaps.mjs';
+import { fill, scale, brightness } from './util/bitmaps.mjs';
 
 // https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
 // https://www.madebymike.com.au/writing/canvas-image-manipulation/
@@ -50,6 +50,7 @@ export function render (dt) {
     let angle = getCastTheta(globals.d, i),
       { which, intersection, hit, offset } = cast(angle + theta),
       correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
+      dist = globals.distance(intersection, globals.observer),
       color = hit ? [0, 255, 0, 1] : [128, 128, 128, 1],
       _height = (globals.side * globals.d) / correctedDistance,
       starty = (globals.height - _height) * (globals.playerHeight / globals.side), // TODO handle playerHeight correctly
@@ -62,6 +63,10 @@ export function render (dt) {
       let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
       for (let k = 0; k < globals.side; k++) {
         bmTemp.buffer32[k] = bmBricks.buffer32[Math.floor(((k % bmBricks.height) * bmBricks.width) + (xOffset % bmBricks.width))];
+      }
+      let darkness = 200 / dist;
+      if (darkness <= 1) {
+        brightness(bmTemp, 0, 0, 1, bmTemp.height, 200 / dist);
       }
       scale(bmTemp, bmMain, 0, startx, starty, _height);
     } else {
