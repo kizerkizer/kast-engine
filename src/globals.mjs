@@ -10,6 +10,7 @@ function min (a, b) {
 }
 
 const diamond = document.querySelector('#diamond');
+const stone = document.querySelector('#stone');
 
 const width = 1280,
   height = 720;
@@ -85,5 +86,6 @@ window.setPlayerHeight = (height) => {
   normalizeAngle,
   distance,
   getIDFromImage,
-  getCellUnderVertex
+  getCellUnderVertex,
+ stone
 }

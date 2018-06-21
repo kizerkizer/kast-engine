@@ -42,7 +42,8 @@ let imageData = globals.raycast.createImageData(globals.width, globals.height),
   diamondID = globals.getIDFromImage(diamond);
 
 let bmMain = new BitMap(imageData),
-  bmBricks = new BitMap(diamondID);
+  bmBricks = new BitMap(diamondID),
+  bmStone = new BitMap(globals.getIDFromImage(globals.stone));
 
 export function render (dt) {
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
@@ -81,7 +82,7 @@ export function render (dt) {
 
       let y = Math.floor(j);
       let x = Math.floor(startx);
-      bmMain.buffer32[y * bmMain.width + x] = bmBricks.buffer32[Math.floor(((vector[1] % bmBricks.height) * bmBricks.width) + (vector[0] % bmBricks.width))];
+      bmMain.buffer32[y * bmMain.width + x] = bmStone.buffer32[Math.floor(((vector[1] % bmStone.height) * bmStone.width) + (vector[0] % bmStone.width))];
     }
   }
 
