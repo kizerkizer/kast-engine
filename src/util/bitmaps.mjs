@@ -64,15 +64,11 @@ class BitMap {
     this._buffer8 = new Uint8ClampedArray(this._arrayBuffer);
     this.buffer32 = new Uint32Array(this._arrayBuffer);
     this._writeImageData();
+    this.width = this._imageData.width;
+    this.height = this._imageData.height;
   }
   _writeImageData () {
     this._buffer8.set(this._imageData.data);
-  }
-  get width () {
-    return this._imageData.width;
-  }
-  get height () {
-    return this._imageData.height;
   }
   write () {
     this._imageData.data.set(this._buffer8);
