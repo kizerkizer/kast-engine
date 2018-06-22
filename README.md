@@ -1,5 +1,4 @@
 ![KastEngine](https://i.imgur.com/yJ2IgCr.png)
-# kast-engine
 ## intro
 A little raycaster engine.
 ## todo
