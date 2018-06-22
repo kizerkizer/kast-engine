@@ -24,7 +24,7 @@ function scale (sourceBM, targetBM, sourceStartX, targetStartX, targetStartY, he
 }
 
 function unpack (color) {
-  return [(color & 0xff000000) >>> 24, (color & 0x00ff0000) >>> 16, (color & 0x0000ff00) >>> 8, color & 0x000000ff].reverse();
+  return [color & 0x000000ff, (color & 0x0000ff00) >>> 8, (color & 0x00ff0000) >>> 16, (color & 0xff000000) >>> 24];
 }
 
 function pack (array) {
