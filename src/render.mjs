@@ -19,10 +19,9 @@ export function render (dt) {
       { which, intersection, hit, offset } = cast(angle + theta),
       correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
       dist = globals.distance(intersection, globals.observer),
-      color = hit ? [0, 255, 0, 1] : [128, 128, 128, 1],
       _height = (globals.side * globals.d) / correctedDistance,
-      starty = (globals.height - _height) * (globals.playerHeight / globals.side), // TODO handle playerHeight correctly
-      startx = i + globals.width / 2;
+      starty = (globals.height - _height) * (globals.playerHeight / globals.side) << 0, // TODO handle playerHeight correctly
+      startx = (i + globals.width / 2) << 0;
 
     fill(bmMain, startx, 0, 1, starty,  makeColor([0, 0, 128, 255])); // sky
 
