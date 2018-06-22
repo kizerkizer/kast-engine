@@ -2,48 +2,16 @@ import * as globals from './globals.mjs';
 import { keys, mouse} from './input.mjs';
 import { getCastTheta, cast } from './cast.mjs';
 import { theta } from './movement.mjs';
-import { fill, scale, brightness } from './util/bitmaps.mjs';
-
-// https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
-// https://www.madebymike.com.au/writing/canvas-image-manipulation/
-export class BitMap {
-  // TODO endianess
-  constructor (imageData) {
-    this._imageData = imageData;
-    this._arrayBuffer = new ArrayBuffer(this._imageData.data.length);
-    this._buffer8 = new Uint8ClampedArray(this._arrayBuffer);
-    this.buffer32 = new Uint32Array(this._arrayBuffer);
-    this._writeImageData();
-  }
-  _writeImageData () {
-    this._buffer8.set(this._imageData.data);
-  }
-  get width () {
-    return this._imageData.width;
-  }
-  get height () {
-    return this._imageData.height;
-  }
-  write () {
-    this._imageData.data.set(this._buffer8);
-  }
-  get imageData () {
-    return this._imageData;
-  }
-}
+import { BitMap, fill, scale, brightness } from './util/bitmaps.mjs';
 
 function makeColor (array) {
   return (array[3] << 24) | (array[2] << 16) | (array[1] << 8) | (array[0] << 0);
 }
 
-let bmTemp = new BitMap(globals.raycast.createImageData(1, globals.side));
-
-let imageData = globals.raycast.createImageData(globals.width, globals.height),
-  diamondID = globals.getIDFromImage(diamond);
-
-let bmMain = new BitMap(imageData),
-  bmBricks = new BitMap(diamondID),
-  bmStone = new BitMap(globals.getIDFromImage(globals.stone));
+let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height)),
+  bmBricks = new BitMap(globals.getIDFromImage(diamond)),
+  bmStone = new BitMap(globals.getIDFromImage(globals.stone)),
+  bmTemp = new BitMap(globals.raycast.createImageData(1, globals.side));
 
 export function render (dt) {
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
@@ -77,22 +45,16 @@ export function render (dt) {
     for (let k = 0, j = starty + _height; j < globals.height; j++, k++) {
       let distX = (globals.playerHeight * globals.d) / (j - (globals.height / 2)); // TODO should actually be function of playerHeight
       let distY = distX * Math.tan(angle);
-
-      let vector = [distX, distY];
-
-      vector = [vector[0] * Math.cos(theta) + vector[1] * -Math.sin(theta), vector[0] * Math.sin(theta) + vector[1] * Math.cos(theta)];
-      vector = [globals.observer[0] + vector[0], globals.observer[1] + vector[1]];
-      vector[0] = vector[0] << 0;
-      vector[1] = vector[1] << 0;
-
-      let y = Math.floor(j);
-      let x = Math.floor(startx);
-      bmMain.buffer32[y * bmMain.width + x] = bmStone.buffer32[Math.floor(((vector[1] % bmStone.height) * bmStone.width) + (vector[0] % bmStone.width))];
+      let vector0 = ((distX * Math.cos(theta) + distY * -Math.sin(theta)) + globals.observer[0]) << 0;
+      let vector1 = ((distX * Math.sin(theta) + distY * Math.cos(theta)) + globals.observer[1]) << 0;
+      let y = (j) << 0;
+      let x = (startx) << 0;
+      bmMain.buffer32[y * bmMain.width + x] = bmStone.buffer32[Math.floor(((vector1 % bmStone.height) * bmStone.width) + (vector0 % bmStone.width))];
     }
   }
 
   bmMain.write();
-  globals.raycast.putImageData(imageData, 0, 0);
+  globals.raycast.putImageData(bmMain.imageData, 0, 0);
 
 }
 
