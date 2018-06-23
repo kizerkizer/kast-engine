@@ -52,7 +52,7 @@ export function render (dt) {
 
     // draw floor
     for (let k = 0, j = starty + _height; j < globals.height; j++, k++) {
-      let distX = (globals.playerHeight * globals.d) / (j - (globals.height / 2)); // TODO should actually be function of playerHeight
+      let distX = Math.abs((globals.playerHeight * globals.d) / (j - (globals.height / 2))); // TODO should actually be function of playerHeight
       let distY = distX * Math.tan(angle);
       let vector0 = ((distX * Math.cos(theta) + distY * -Math.sin(theta)) + globals.observer[0]) << 0;
       let vector1 = ((distX * Math.sin(theta) + distY * Math.cos(theta)) + globals.observer[1]) << 0;
