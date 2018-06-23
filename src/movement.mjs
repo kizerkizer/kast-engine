@@ -1,5 +1,5 @@
 import * as globals from './globals.mjs';
-import { keys } from './input.mjs';
+import { keys, mouse } from './input.mjs';
 
 let theta = 0;
 
@@ -7,13 +7,8 @@ let theta = 0;
 
 function adjustPlayer (dt) {
   dt = dt / 50;
-  if (keys[37]) {
-    theta -= Math.PI / 64 * dt;
-  }
-  if (keys[39]) {
-    theta += Math.PI / 64 * dt;
-  }
   let original = [globals.observer[0], globals.observer[1]];
+  theta = (mouse.x / 500) % (2 * Math.PI)
   if (keys[83]) {
     globals.observer[0] -= 10 * Math.cos(theta) * dt;
     globals.observer[1] -= 10 * Math.sin(theta) * dt;

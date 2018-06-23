@@ -5,6 +5,8 @@ const raycast = document.querySelector('#raycast').getContext('2d', {
 });
 raycast.imageSmoothingEnabled = false;
 
+const canvas = document.querySelector('#raycast');
+
 function min (a, b) {
   return a < b ? a : b;
 }
@@ -89,5 +91,6 @@ window.setPlayerHeight = (height) => {
   distance,
   getIDFromImage,
   getCellUnderVertex,
- stone
+  stone,
+  canvas
 }

@@ -1,6 +1,15 @@
+import * as globals from './globals.mjs';
+
 const keys = {};
 
-const mouse = {};
+const mouse = {
+  x: 0,
+  y: 0
+};
+
+globals.canvas.onclick = () => {
+  globals.canvas.requestPointerLock();
+};
 
 document.body.onkeydown = (e) => {
   keys[e.which] = true;
@@ -11,9 +20,8 @@ document.body.onkeyup = (e) => {
 };
 
 document.body.onmousemove = (e) => {
-  // TODO
-  //mouse.x = e.clientX;//window.devicePixelRatio * (e.clientX - document.querySelector('#canvas').getBoundingClientRect().left);
-  //mouse.y = e.clientY;//window.devicePixelRatio * (e.clientY - document.querySelector('#canvas').getBoundingClientRect().top);
+  mouse.x += e.movementX;
+  mouse.y += e.movementY;
 };
 
 export {
