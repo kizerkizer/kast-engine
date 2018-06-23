@@ -12,8 +12,10 @@ function min (a, b) {
 const diamond = document.querySelector('#diamond');
 const stone = document.querySelector('#stone');
 
-const width = 1280,
-  height = 720;
+const width = 640,
+  height = 360;
+
+document.querySelector('#raycast').style.transform = `scale(${(window.innerWidth / (width / 2)).toFixed(2)}, ${(window.innerHeight / (height / 2)).toFixed(2)})`;
 
 const side = 64,
   grid = [
