@@ -13,6 +13,7 @@ function min (a, b) {
 
 const diamond = document.querySelector('#diamond');
 const stone = document.querySelector('#stone');
+const ceiling = document.querySelector('#ceiling');
 
 const width = 640,
   height = 360;
@@ -92,5 +93,6 @@ window.setPlayerHeight = (height) => {
   getIDFromImage,
   getCellUnderVertex,
   stone,
-  canvas
+  canvas,
+  ceiling
 }

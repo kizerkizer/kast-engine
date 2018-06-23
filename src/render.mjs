@@ -11,7 +11,8 @@ function makeColor (array) {
 let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height)),
   bmBricks = new BitMap(globals.getIDFromImage(diamond)),
   bmStone = new BitMap(globals.getIDFromImage(globals.stone)),
-  bmTemp = new BitMap(globals.raycast.createImageData(1, globals.side));
+  bmTemp = new BitMap(globals.raycast.createImageData(1, globals.side)),
+  bmCeil = new BitMap(globals.getIDFromImage(globals.ceiling));
 
 export function render (dt) {
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
@@ -23,7 +24,16 @@ export function render (dt) {
       starty = (globals.height - _height) * (globals.playerHeight / globals.side) << 0, // TODO handle playerHeight correctly
       startx = (i + globals.width / 2) << 0;
 
-    fill(bmMain, startx, 0, 1, starty,  makeColor([0, 0, 128, 255])); // sky
+    // draw ceiling
+    for (let k = 0, j = 0; j < starty; j++, k++) {
+      let distX = (globals.playerHeight * globals.d) / (j - (globals.height / 2)); // TODO should actually be function of playerHeight
+      let distY = distX * Math.tan(angle);
+      let vector0 = ((distX * Math.cos(theta) + distY * -Math.sin(theta)) + globals.observer[0]) << 0;
+      let vector1 = ((distX * Math.sin(theta) + distY * Math.cos(theta)) + globals.observer[1]) << 0;
+      let y = (j) << 0;
+      let x = (startx) << 0;
+      bmMain.buffer32[y * bmMain.width + x] = bmCeil.buffer32[Math.floor(((vector1 % bmCeil.height) * bmCeil.width) + (vector0 % bmCeil.width))];
+    }
 
     if (hit) {
       // draw tiled, scaled column
