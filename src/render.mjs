@@ -14,10 +14,12 @@ let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.h
   bmTemp = new BitMap(globals.raycast.createImageData(1, globals.side)),
   bmCeil = new BitMap(globals.getIDFromImage(globals.ceiling));
 
+let angle;
+
 export function render (dt) {
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
-    let angle = getCastTheta(globals.d, i),
-      { which, intersection, hit, offset } = cast(angle + theta),
+    angle = getCastTheta(globals.d, i);
+    let { which, intersection, hit, offset } = cast(angle + theta),
       correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
       dist = globals.distance(intersection, globals.observer),
       _height = (globals.side * globals.d) / correctedDistance,
@@ -26,13 +28,7 @@ export function render (dt) {
 
     // draw ceiling
     for (let k = 0, j = 0; j < starty; j++, k++) {
-      let distX = Math.abs((globals.playerHeight * globals.d) / (j - (globals.height / 2))); // TODO should actually be function of playerHeight
-      let distY = distX * Math.tan(angle);
-      let vector0 = ((distX * Math.cos(theta) + distY * -Math.sin(theta)) + globals.observer[0]) << 0;
-      let vector1 = ((distX * Math.sin(theta) + distY * Math.cos(theta)) + globals.observer[1]) << 0;
-      let y = (j) << 0;
-      let x = (startx) << 0;
-      bmMain.buffer32[y * bmMain.width + x] = bmCeil.buffer32[Math.floor(((vector1 % bmCeil.height) * bmCeil.width) + (vector0 % bmCeil.width))];
+      verticalCastDrawVertex(startx, j, bmCeil, bmMain);
     }
 
     if (hit) {
@@ -52,19 +48,24 @@ export function render (dt) {
 
     // draw floor
     for (let k = 0, j = starty + _height; j < globals.height; j++, k++) {
-      let distX = Math.abs((globals.playerHeight * globals.d) / (j - (globals.height / 2))); // TODO should actually be function of playerHeight
-      let distY = distX * Math.tan(angle);
-      let vector0 = ((distX * Math.cos(theta) + distY * -Math.sin(theta)) + globals.observer[0]) << 0;
-      let vector1 = ((distX * Math.sin(theta) + distY * Math.cos(theta)) + globals.observer[1]) << 0;
-      let y = (j) << 0;
-      let x = (startx) << 0;
-      bmMain.buffer32[y * bmMain.width + x] = bmStone.buffer32[Math.floor(((vector1 % bmStone.height) * bmStone.width) + (vector0 % bmStone.width))];
+      verticalCastDrawVertex(startx, j, bmStone, bmMain);
     }
   }
 
   bmMain.write();
   globals.raycast.putImageData(bmMain.imageData, 0, 0);
 
+}
+
+function verticalCastDrawVertex (planeX, planeY, bmSource, bmTarget) {
+  let distX, distY, vector0, vector1, y, x;
+  distX = Math.abs((globals.playerHeight * globals.d) / (planeY - (globals.height / 2)));
+  distY = distX * Math.tan(angle);
+  vector0 = ((distX * Math.cos(theta) + distY * -Math.sin(theta)) + globals.observer[0]) << 0;
+  vector1 = ((distX * Math.sin(theta) + distY * Math.cos(theta)) + globals.observer[1]) << 0;
+  y = planeY << 0;
+  x = (planeX) << 0;
+  bmTarget.buffer32[y * bmTarget.width + x] = bmSource.buffer32[Math.floor(((vector1 % bmSource.height) * bmSource.width) + (vector0 % bmSource.width))];
 }
 
 function correctFishEye (distance, angle) {
