@@ -11,6 +11,8 @@ function fill (bm, x, y, width, height, color) {
   }
 }
 
+const virtualCtx = document.createElement('canvas').getContext('2d');
+
 function scale (sourceBM, targetBM, sourceStartX, targetStartX, targetStartY, height) {
   let ratio = sourceBM.height / height;
   sourceStartX = sourceStartX << 0;
@@ -54,12 +56,12 @@ function brightness (bm, x, y, width, height, amount) {
   }
 }
 
-// https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
-// https://www.madebymike.com.au/writing/canvas-image-manipulation/
 class BitMap {
   // TODO endianess
   constructor (imageData) {
     this._imageData = imageData;
+    // https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
+    // https://www.madebymike.com.au/writing/canvas-image-manipulation/
     this._arrayBuffer = new ArrayBuffer(this._imageData.data.length);
     this._buffer8 = new Uint8ClampedArray(this._arrayBuffer);
     this.buffer32 = new Uint32Array(this._arrayBuffer);
@@ -78,11 +80,17 @@ class BitMap {
   }
 }
 
+function createBitmapFromImageElement (imageElement) {
+  virtualCtx.drawImage(imageElement, 0, 0);
+  return new BitMap(virtualCtx.getImageData(0, 0, imageElement.width, imageElement.height));
+}
+
 export {
   fill,
   scale,
   brightness,
   BitMap,
   pack,
-  unpack
+  unpack,
+  createBitmapFromImageElement
 }

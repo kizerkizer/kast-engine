@@ -1,12 +1,6 @@
 import * as globals from './globals.mjs';
-import { BitMap } from './util/bitmaps.mjs';
+import { createBitmapFromImageElement } from './util/bitmaps.mjs';
 
-const bmBricks = new BitMap(globals.getIDFromImage(diamond)),
-  bmStone = new BitMap(globals.getIDFromImage(globals.stone)),
-  bmCeil = new BitMap(globals.getIDFromImage(globals.ceiling));
-
-export {
-  bmBricks,
-  bmStone,
-  bmCeil
-}
+export const bmBricks    = createBitmapFromImageElement(globals.diamond);
+export const bmStone     = createBitmapFromImageElement(globals.stone);
+export const bmCeil      = createBitmapFromImageElement(globals.ceiling);

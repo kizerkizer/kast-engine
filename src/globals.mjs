@@ -71,12 +71,6 @@ window.setPlayerHeight = (height) => {
   return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
 }
 
- function getIDFromImage (img) {
-  let ctx = document.createElement('canvas').getContext('2d');
-  ctx.drawImage(img, 0, 0);
-  return ctx.getImageData(0, 0, img.width, img.height);
-}
-
  function getCellUnderVertex (vertex) {
   return [((vertex[0] / side) << 0), ((vertex[1] / side) << 0)];
 }
