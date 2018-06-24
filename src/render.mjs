@@ -35,13 +35,13 @@ export function render (dt) {
       // draw tiled, scaled column
       let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
       for (let k = 0; k < globals.side; k++) {
-        bmTemp.buffer32[k] = bmBricks.buffer32[Math.floor(((k % bmBricks.height) * bmBricks.width) + (xOffset % bmBricks.width))];
+        drawPixelFromTexture(xOffset, k, 0, k, bmBricks, bmTemp);
       }
       let darkness = 200 / dist;
       if (darkness <= 1) {
         brightness(bmTemp, 0, 0, 1, bmTemp.height, 200 / dist);
       }
-      scale(bmTemp, bmMain, 0, startx, starty, _height);
+      scale(bmTemp, bmMain, 0, startx, starty, _height); // TODO remove
     } else {
       fill(bmMain, startx, starty, 1, _height,  makeColor([0, 0, 0, 255])); // "fog"
     }
@@ -57,6 +57,10 @@ export function render (dt) {
 
 }
 
+function drawPixelFromTexture (sx, sy, tx, ty, bmSource, bmTarget) {
+  bmTarget.buffer32[ty * bmTarget.width + tx] = bmSource.buffer32[Math.floor(((sy % bmSource.height) * bmSource.width) + (sx % bmSource.width))];
+}
+
 function verticalCastDrawVertex (planeX, planeY, bmSource, bmTarget) {
   let distX, distY, vector0, vector1, y, x;
   distX = Math.abs((globals.playerHeight * globals.d) / (planeY - (globals.height / 2)));
@@ -65,7 +69,7 @@ function verticalCastDrawVertex (planeX, planeY, bmSource, bmTarget) {
   vector1 = ((distX * Math.sin(theta) + distY * Math.cos(theta)) + globals.observer[1]) << 0;
   y = planeY << 0;
   x = (planeX) << 0;
-  bmTarget.buffer32[y * bmTarget.width + x] = bmSource.buffer32[Math.floor(((vector1 % bmSource.height) * bmSource.width) + (vector0 % bmSource.width))];
+  drawPixelFromTexture(vector0, vector1, x, y, bmSource, bmTarget);
 }
 
 function correctFishEye (distance, angle) {
