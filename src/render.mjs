@@ -3,15 +3,13 @@ import { keys, mouse} from './input.mjs';
 import { getCastTheta, cast } from './cast.mjs';
 import { theta } from './movement.mjs';
 import { BitMap, fill, scale, brightness } from './util/bitmaps.mjs';
+import * as textures from './textures.mjs';
 
 function makeColor (array) {
   return (array[3] << 24) | (array[2] << 16) | (array[1] << 8) | (array[0] << 0);
 }
 
-let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height)),
-  bmBricks = new BitMap(globals.getIDFromImage(diamond)),
-  bmStone = new BitMap(globals.getIDFromImage(globals.stone)),
-  bmCeil = new BitMap(globals.getIDFromImage(globals.ceiling));
+let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height));
 
 let angle;
 
@@ -31,7 +29,7 @@ export function render (dt) {
 
     // draw ceiling
     for (let k = 0, j = 0; j < starty; j++, k++) {
-      textureVertex(startx, j, bmCeil, bmMain);
+      textureVertex(startx, j, textures.bmCeil, bmMain);
     }
 
     if (hit) {
@@ -39,7 +37,7 @@ export function render (dt) {
       let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
       let ratio = globals.side / height;
       for (let k = 0, j = starty; j < starty + height; j++, k++) {
-        drawPixelFromTexture(intersection[0] + xOffset, k * ratio, startx, j, bmBricks, bmMain);
+        drawPixelFromTexture(intersection[0] + xOffset, k * ratio, startx, j, textures.bmBricks, bmMain);
       }
       let darkness = 200 / dist;
       if (darkness <= 1) {
@@ -51,7 +49,7 @@ export function render (dt) {
 
     // draw floor
     for (let k = 0, j = starty + height; j < globals.height; j++, k++) {
-      textureVertex(startx, j, bmStone, bmMain);
+      textureVertex(startx, j, textures.bmStone, bmMain);
     }
 
   }
