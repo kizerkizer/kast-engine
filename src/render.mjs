@@ -21,8 +21,8 @@ export function render (dt) {
     let { which, intersection, hit, offset } = cast(angle + theta),
       correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
       dist = globals.distance(intersection, globals.observer),
-      _height = (globals.side * globals.d) / correctedDistance,
-      starty = (globals.height - _height) * (globals.playerHeight / globals.side) << 0, // TODO handle playerHeight correctly
+      height = (globals.side * globals.d) / correctedDistance,
+      starty = (globals.height - height) * (globals.playerHeight / globals.side) << 0,
       startx = (i + globals.width / 2) << 0;
 
     // draw ceiling
@@ -33,20 +33,20 @@ export function render (dt) {
     if (hit) {
       // draw tiled, scaled column
       let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
-      let ratio = globals.side / _height;
-      for (let k = 0, j = starty; j < starty + _height; j++, k++) {
+      let ratio = globals.side / height;
+      for (let k = 0, j = starty; j < starty + height; j++, k++) {
         drawPixelFromTexture(intersection[0] + xOffset, k * ratio, startx, j, bmBricks, bmMain);
       }
       let darkness = 200 / dist;
       if (darkness <= 1) {
-        brightness(bmMain, startx, starty, 1, _height, darkness);
+        brightness(bmMain, startx, starty, 1, height, darkness);
       }
     } else {
-      fill(bmMain, startx, starty, 1, _height,  makeColor([0, 0, 0, 255])); // "fog"
+      fill(bmMain, startx, starty, 1, height,  makeColor([0, 0, 0, 255])); // "fog"
     }
 
     // draw floor
-    for (let k = 0, j = starty + _height; j < globals.height; j++, k++) {
+    for (let k = 0, j = starty + height; j < globals.height; j++, k++) {
       textureVertex(startx, j, bmStone, bmMain);
     }
   }
