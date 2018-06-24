@@ -10,24 +10,18 @@ let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.h
 let angle;
 
 export function render (dt) {
-
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
-
     angle = getCastTheta(globals.d, i);
-
     let { which, intersection, hit, offset } = cast(angle + theta);
-
     let correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
       dist = globals.distance(intersection, globals.observer),
       height = (globals.side * globals.d) / correctedDistance,
       starty = (globals.height - height) * (globals.playerHeight / globals.side) << 0,
       startx = (i + globals.width / 2) << 0;
-
     // draw ceiling
     for (let k = 0, j = 0; j < starty; j++, k++) {
       textureVertex(startx, j, textures.bmCeil, bmMain);
     }
-
     if (hit) {
       // draw tiled, scaled column
       let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
@@ -42,17 +36,13 @@ export function render (dt) {
     } else {
       fill(bmMain, startx, starty, 1, height,  pack([0, 0, 0, 255])); // "fog"
     }
-
     // draw floor
     for (let k = 0, j = starty + height; j < globals.height; j++, k++) {
       textureVertex(startx, j, textures.bmStone, bmMain);
     }
-
   }
-
   bmMain.write();
   globals.raycast.putImageData(bmMain.imageData, 0, 0);
-
 }
 
 
