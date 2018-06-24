@@ -2,12 +2,8 @@ import * as globals from './globals.mjs';
 import { keys, mouse} from './input.mjs';
 import { getCastTheta, cast } from './cast.mjs';
 import { theta } from './movement.mjs';
-import { BitMap, fill, scale, brightness } from './util/bitmaps.mjs';
+import { BitMap, fill, scale, brightness, pack } from './util/bitmaps.mjs';
 import * as textures from './textures.mjs';
-
-function makeColor (array) {
-  return (array[3] << 24) | (array[2] << 16) | (array[1] << 8) | (array[0] << 0);
-}
 
 let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height));
 
@@ -44,7 +40,7 @@ export function render (dt) {
         brightness(bmMain, startx, starty, 1, height, darkness);
       }
     } else {
-      fill(bmMain, startx, starty, 1, height,  makeColor([0, 0, 0, 255])); // "fog"
+      fill(bmMain, startx, starty, 1, height,  pack([0, 0, 0, 255])); // "fog"
     }
 
     // draw floor

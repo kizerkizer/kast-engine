@@ -82,5 +82,7 @@ export {
   fill,
   scale,
   brightness,
-  BitMap
+  BitMap,
+  pack,
+  unpack
 }
