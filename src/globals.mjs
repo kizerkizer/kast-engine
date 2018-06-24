@@ -46,7 +46,9 @@ const side = 64,
   
 const sprites = [{
   x: 128,
-  y: 128
+  y: 128,
+  width: 32,
+  height: 32
 }];
 
 /// viewport
