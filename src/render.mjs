@@ -16,10 +16,14 @@ let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.h
 let angle;
 
 export function render (dt) {
+
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
+
     angle = getCastTheta(globals.d, i);
-    let { which, intersection, hit, offset } = cast(angle + theta),
-      correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
+
+    let { which, intersection, hit, offset } = cast(angle + theta);
+
+    let correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
       dist = globals.distance(intersection, globals.observer),
       height = (globals.side * globals.d) / correctedDistance,
       starty = (globals.height - height) * (globals.playerHeight / globals.side) << 0,
@@ -49,6 +53,7 @@ export function render (dt) {
     for (let k = 0, j = starty + height; j < globals.height; j++, k++) {
       textureVertex(startx, j, bmStone, bmMain);
     }
+
   }
 
   bmMain.write();
