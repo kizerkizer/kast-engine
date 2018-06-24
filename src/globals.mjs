@@ -44,6 +44,11 @@ const side = 64,
   [1, 1, 1, 1, 1, 1, 1, 1],
   ];
   
+const sprites = [{
+  x: 128,
+  y: 128
+}];
+
 /// viewport
 let p = width,
   d = (width / 2) / Math.tan(Math.PI / 6), // we want 60deg FOV
@@ -94,5 +99,6 @@ window.setPlayerHeight = (height) => {
   getCellUnderVertex,
   stone,
   canvas,
-  ceiling
+  ceiling,
+  sprites
 }
