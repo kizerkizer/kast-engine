@@ -81,12 +81,6 @@ function textureVertex (planeX, planeY, bmSource, bmTarget) {
   drawPixelFromTexture(vector0, vector1, x, y, bmSource, bmTarget);
 }
 
-/*function textureVertexVertical (intersection, planeX, planeY, bmSource, bmTarget) {
-  let distX, distY, vector0, vector1, y, x;
-  distX = //Math.abs((globals.playerHeight * globals.d) / (planeY - (globals.height / 2)));
-  distY = //distX * Math.tan(angle);
-}*/
-
 function correctFishEye (distance, angle) {
   return distance * Math.cos(angle);
 }
