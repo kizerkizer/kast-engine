@@ -11,7 +11,6 @@ function makeColor (array) {
 let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height)),
   bmBricks = new BitMap(globals.getIDFromImage(diamond)),
   bmStone = new BitMap(globals.getIDFromImage(globals.stone)),
-  bmTemp = new BitMap(globals.raycast.createImageData(1, globals.side)),
   bmCeil = new BitMap(globals.getIDFromImage(globals.ceiling));
 
 let angle;
@@ -28,27 +27,27 @@ export function render (dt) {
 
     // draw ceiling
     for (let k = 0, j = 0; j < starty; j++, k++) {
-      verticalCastDrawVertex(startx, j, bmCeil, bmMain);
+      textureVertex(startx, j, bmCeil, bmMain);
     }
 
     if (hit) {
       // draw tiled, scaled column
       let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
-      for (let k = 0; k < globals.side; k++) {
-        drawPixelFromTexture(xOffset, k, 0, k, bmBricks, bmTemp);
+      let ratio = globals.side / _height;
+      for (let k = 0, j = starty; j < starty + _height; j++, k++) {
+        drawPixelFromTexture(intersection[0] + xOffset, k * ratio, startx, j, bmBricks, bmMain);
       }
       let darkness = 200 / dist;
       if (darkness <= 1) {
-        brightness(bmTemp, 0, 0, 1, bmTemp.height, 200 / dist);
+        brightness(bmMain, startx, starty, 1, _height, darkness);
       }
-      scale(bmTemp, bmMain, 0, startx, starty, _height); // TODO remove
     } else {
       fill(bmMain, startx, starty, 1, _height,  makeColor([0, 0, 0, 255])); // "fog"
     }
 
     // draw floor
     for (let k = 0, j = starty + _height; j < globals.height; j++, k++) {
-      verticalCastDrawVertex(startx, j, bmStone, bmMain);
+      textureVertex(startx, j, bmStone, bmMain);
     }
   }
 
@@ -57,11 +56,16 @@ export function render (dt) {
 
 }
 
+
 function drawPixelFromTexture (sx, sy, tx, ty, bmSource, bmTarget) {
+  sx = sx << 0;
+  sy = sy << 0;
+  tx = tx << 0;
+  ty = ty << 0;
   bmTarget.buffer32[ty * bmTarget.width + tx] = bmSource.buffer32[Math.floor(((sy % bmSource.height) * bmSource.width) + (sx % bmSource.width))];
 }
 
-function verticalCastDrawVertex (planeX, planeY, bmSource, bmTarget) {
+function textureVertex (planeX, planeY, bmSource, bmTarget) {
   let distX, distY, vector0, vector1, y, x;
   distX = Math.abs((globals.playerHeight * globals.d) / (planeY - (globals.height / 2)));
   distY = distX * Math.tan(angle);
@@ -71,6 +75,12 @@ function verticalCastDrawVertex (planeX, planeY, bmSource, bmTarget) {
   x = (planeX) << 0;
   drawPixelFromTexture(vector0, vector1, x, y, bmSource, bmTarget);
 }
+
+/*function textureVertexVertical (intersection, planeX, planeY, bmSource, bmTarget) {
+  let distX, distY, vector0, vector1, y, x;
+  distX = //Math.abs((globals.playerHeight * globals.d) / (planeY - (globals.height / 2)));
+  distY = //distX * Math.tan(angle);
+}*/
 
 function correctFishEye (distance, angle) {
   return distance * Math.cos(angle);
