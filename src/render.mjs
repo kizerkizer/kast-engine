@@ -21,6 +21,11 @@ export function render (dt) {
     // draw ceiling
     for (let k = 0, j = 0; j < starty; j++, k++) {
       textureVertex(startx, j, textures.bmCeil, bmMain);
+      let darkness = starty / (0.5 * j);
+      if (darkness > 0.8) {
+        darkness = 0.8
+      }
+      brightness(bmMain, startx, j, 1, 1, darkness);
     }
     if (hit) {
       // draw tiled, scaled column
@@ -37,8 +42,12 @@ export function render (dt) {
       fill(bmMain, startx, starty, 1, height,  pack([0, 0, 0, 255])); // "fog"
     }
     // draw floor
-    for (let k = 0, j = starty + height; j < globals.height; j++, k++) {
+    let count = 0;
+    for (let k = (globals.height - starty - height), j = globals.height; j > starty + height; j--, k--) {
       textureVertex(startx, j, textures.bmStone, bmMain);
+      let darkness = ((globals.height - starty - height) / (k * 0.5)) //* 0.5;
+      darkness = 1 / darkness;
+      brightness(bmMain, startx, j, 1, 1, darkness);
     }
   }
   bmMain.write();
