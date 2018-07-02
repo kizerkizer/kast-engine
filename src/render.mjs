@@ -43,10 +43,10 @@ export function render (dt) {
         for (let k = 0, j = starty; j < starty + height; j++, k++) {
           drawPixelFromTexture(xOffset, k * ratio, startx, j, wallTexture, bmMain);
         }
-        /*let darkness = 200 / dist;
+        let darkness = 200 / dist;
         if (darkness <= 1) {
           brightness(bmMain, startx, starty, 1, height, darkness);
-        }*/
+        }
       //}
     } else {
       fill(bmMain, startx, starty, 1, height,  pack([0, 0, 0, 255])); // "fog"
@@ -55,11 +55,11 @@ export function render (dt) {
     let count = 0;
     for (let k = (globals.height - starty - height), j = globals.height; j > starty + height; j--, k--) {
       textureVertex(startx, j, textures.bmStone, bmMain);
-      /*let darkness = ((globals.height - starty - height) / (k * 0.5)) //* 0.5;
+      let darkness = ((globals.height - starty - height) / (k * 0.5)) //* 0.5;
       darkness = 1 / darkness;
       if (darkness <= 1) {
         brightness(bmMain, startx, j, 1, 1, darkness);
-      }*/
+      }
     }
   }
   bmMain.write();
