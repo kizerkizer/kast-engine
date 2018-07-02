@@ -34,7 +34,7 @@ export function render (dt) {
         let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
         let ratio = globals.side / height;
         for (let k = 0, j = starty; j < starty + height; j++, k++) {
-          drawPixelFromTexture(intersection[0] + xOffset, k * ratio, startx, j, textures.bmBricks, bmMain);
+          drawPixelFromTexture(xOffset, k * ratio, startx, j, textures.bmBricks, bmMain);
         }
         let darkness = 200 / dist;
         if (darkness <= 1) {
