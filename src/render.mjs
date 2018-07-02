@@ -2,10 +2,16 @@ import * as globals from './globals.mjs';
 import { keys, mouse} from './input.mjs';
 import { getCastTheta, cast } from './cast.mjs';
 import { theta } from './movement.mjs';
-import { BitMap, fill, scale, brightness, pack } from './util/bitmaps.mjs';
+import { BitMap, fill, scale, brightness, pack, createBitmapFromImageElement } from './util/bitmaps.mjs';
 import * as textures from './textures.mjs';
 
 let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height));
+
+let wallTexture = textures.bmStone;
+
+setTimeout(() => {
+  wallTexture = createBitmapFromImageElement(document.body.querySelector('#hiresbricks'));
+}, 1000);
 
 let angle;
 
@@ -34,7 +40,7 @@ export function render (dt) {
         let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
         let ratio = globals.side / height;
         for (let k = 0, j = starty; j < starty + height; j++, k++) {
-          drawPixelFromTexture(xOffset, k * ratio, startx, j, textures.bmBricks, bmMain);
+          drawPixelFromTexture(xOffset, k * ratio, startx, j, wallTexture, bmMain);
         }
         let darkness = 200 / dist;
         if (darkness <= 1) {
