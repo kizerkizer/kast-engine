@@ -12,7 +12,7 @@ let angle;
 export function render (dt) {
   for (let i = -globals.p / 2; i < globals.p / 2; i++) {
     angle = getCastTheta(globals.d, i);
-    let { which, intersection, hit, offset } = cast(angle + theta);
+    let { which, intersection, hit, offset, isCorner } = cast(angle + theta);
     let correctedDistance = correctFishEye(globals.distance(intersection, globals.observer), angle),
       dist = globals.distance(intersection, globals.observer),
       height = (globals.side * globals.d) / correctedDistance,
@@ -22,22 +22,25 @@ export function render (dt) {
     for (let k = 0, j = 0; j < starty; j++, k++) {
       textureVertex(startx, j, textures.bmCeil, bmMain);
       let darkness = starty / (0.5 * j);
-      if (darkness > 0.8) {
-        darkness = 0.8
-      }
-      brightness(bmMain, startx, j, 1, 1, darkness);
-    }
-    if (hit) {
-      // draw tiled, scaled column
-      let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
-      let ratio = globals.side / height;
-      for (let k = 0, j = starty; j < starty + height; j++, k++) {
-        drawPixelFromTexture(intersection[0] + xOffset, k * ratio, startx, j, textures.bmBricks, bmMain);
-      }
-      let darkness = 200 / dist;
       if (darkness <= 1) {
-        brightness(bmMain, startx, starty, 1, height, darkness);
+        brightness(bmMain, startx, j, 1, 1, darkness);
       }
+    }
+    if (hit || isCorner) {
+      // draw tiled, scaled column
+      //if (isCorner) {
+        //fill(bmMain, startx, starty, 1, height,  pack([0, 255, 0, 255]));
+      //} else {
+        let xOffset = intersection[(which === `horizontal` ? 0 : 1)];
+        let ratio = globals.side / height;
+        for (let k = 0, j = starty; j < starty + height; j++, k++) {
+          drawPixelFromTexture(intersection[0] + xOffset, k * ratio, startx, j, textures.bmBricks, bmMain);
+        }
+        let darkness = 200 / dist;
+        if (darkness <= 1) {
+          brightness(bmMain, startx, starty, 1, height, darkness);
+        }
+      //}
     } else {
       fill(bmMain, startx, starty, 1, height,  pack([0, 0, 0, 255])); // "fog"
     }
@@ -47,7 +50,9 @@ export function render (dt) {
       textureVertex(startx, j, textures.bmStone, bmMain);
       let darkness = ((globals.height - starty - height) / (k * 0.5)) //* 0.5;
       darkness = 1 / darkness;
-      brightness(bmMain, startx, j, 1, 1, darkness);
+      if (darkness <= 1) {
+        brightness(bmMain, startx, j, 1, 1, darkness);
+      }
     }
   }
   bmMain.write();
