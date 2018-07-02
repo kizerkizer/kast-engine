@@ -32,7 +32,7 @@ export function render (dt) {
         brightness(bmMain, startx, j, 1, 1, darkness);
       }
     }*/
-    fill(bmMain, startx, 0, 1, globals.height - starty, pack([0, 0, 255, 255]));
+    fill(bmMain, startx, 0, 1, globals.height - starty, pack([0, 0, 128, 255]));
     if (hit || isCorner) {
       // draw tiled, scaled column
       //if (isCorner) {
