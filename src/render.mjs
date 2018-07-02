@@ -7,10 +7,12 @@ import * as textures from './textures.mjs';
 
 let bmMain = new BitMap(globals.raycast.createImageData(globals.width, globals.height));
 
-let wallTexture = textures.bmStone;
+let wallTexture = textures.bmStone,
+  floorTexture = textures.bmStone;
 
 setTimeout(() => {
   wallTexture = createBitmapFromImageElement(document.body.querySelector('#hiresbricks'));
+  floorTexture = createBitmapFromImageElement(document.body.querySelector('#snow'));
 }, 1000);
 
 let angle;
@@ -54,7 +56,7 @@ export function render (dt) {
     // draw floor
     let count = 0;
     for (let k = (globals.height - starty - height), j = globals.height; j > starty + height; j--, k--) {
-      textureVertex(startx, j, textures.bmStone, bmMain);
+      textureVertex(startx, j, floorTexture, bmMain);
       let darkness = ((globals.height - starty - height) / (k * 0.5)) //* 0.5;
       darkness = 1 / darkness;
       if (darkness <= 1) {
