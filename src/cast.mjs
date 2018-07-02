@@ -33,7 +33,7 @@ function isSolidCornerVertex (vertex) {
   let [cellX, cellY] = globals.getCellUnderVertex(vertex);
   if (result === `tr`) {
     if ((globals.grid[cellX + 1] && globals.grid[cellX + 1][cellY] && globals.grid[cellX + 1][cellY] === 1)
-      ||(globals.grid[cellX] && globals.grid[cellX][cellY - 1] && globals.grid[cellX][cellY - 1] === 1)) {
+      &&(globals.grid[cellX] && globals.grid[cellX][cellY - 1] && globals.grid[cellX][cellY - 1] === 1)) {
       return true;
     } else {
       return false;
@@ -41,7 +41,7 @@ function isSolidCornerVertex (vertex) {
   }
   if (result === `tl`) {
     if ((globals.grid[cellX - 1] && globals.grid[cellX - 1][cellY] && globals.grid[cellX - 1][cellY] === 1)
-      ||(globals.grid[cellX] && globals.grid[cellX][cellY - 1] && globals.grid[cellX][cellY - 1] === 1)) {
+      &&(globals.grid[cellX] && globals.grid[cellX][cellY - 1] && globals.grid[cellX][cellY - 1] === 1)) {
       return true;
     } else {
       return false;
@@ -49,7 +49,7 @@ function isSolidCornerVertex (vertex) {
   }
   if (result === `br`) {
     if ((globals.grid[cellX + 1] && globals.grid[cellX + 1][cellY] && globals.grid[cellX + 1][cellY] === 1)
-      ||(globals.grid[cellX] && globals.grid[cellX][cellY + 1] && globals.grid[cellX][cellY + 1] === 1 )) {
+      &&(globals.grid[cellX] && globals.grid[cellX][cellY + 1] && globals.grid[cellX][cellY + 1] === 1 )) {
       return true;
     } else {
       return false;
@@ -57,7 +57,7 @@ function isSolidCornerVertex (vertex) {
   }
   if (result === `bl`) {
     if ((globals.grid[cellX - 1] && globals.grid[cellX - 1][cellY] && globals.grid[cellX - 1][cellY] === 1)
-      ||(globals.grid[cellX] && globals.grid[cellX][cellY + 1] && globals.grid[cellX][cellY + 1] === 1)) {
+      &&(globals.grid[cellX] && globals.grid[cellX][cellY + 1] && globals.grid[cellX][cellY + 1] === 1)) {
       return true;
     } else {
       return false;
