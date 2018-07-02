@@ -20,7 +20,7 @@ const width = 640,
 
 document.querySelector('#raycast').style.transform = `scale(${(window.innerWidth / (width / 2)).toFixed(2)}, ${(window.innerHeight / (height / 2)).toFixed(2)})`;
 
-const side = 128,
+const side = 256,
   grid = [
   [1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 0, 0, 0, 0, 1, 1],
@@ -54,7 +54,7 @@ const sprites = [{
 /// viewport
 let p = width,
   d = (width / 2) / Math.tan(Math.PI / 6), // we want 60deg FOV
-  playerHeight = 64; // TODO
+  playerHeight = 128;
 
 window.setPlayerHeight = (height) => {
   playerHeight = height; // TODO

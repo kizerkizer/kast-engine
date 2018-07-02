@@ -6,7 +6,7 @@ let theta = 0;
 // TODO observer should be here
 
 function adjustPlayer (dt) {
-  dt = dt / 50;
+  dt = 0.1 * dt;
   let original = [globals.observer[0], globals.observer[1]];
   theta = (mouse.x / 500) % (2 * Math.PI)
   if (keys[83]) {
